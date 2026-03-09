@@ -1,25 +1,10 @@
-import { Client, LocalAuth } from "whatsapp-web.js";
-import qrcode from "qrcode-terminal";
+import { CommandHandler } from "./core/command-handler";
+import { startBot } from "./bot/client";
 
-const client = new Client({
-  authStrategy: new LocalAuth(),
-});
+import { PingCommand } from "./commands/ping";
 
-client.once("ready", () => {
-  console.log("Client is ready!");
-});
+const commandHandler = new CommandHandler();
 
-client.on("qr", (qr: string) => {
-  console.log("QR RECEIVED");
-  qrcode.generate(qr, { small: true });
-});
+commandHandler.register(new PingCommand());
 
-client.on("message_create", async (message) => {
-  const text = message.body;
-
-  if (text === "!ping") {
-    await message.reply("pong");
-  }
-});
-
-client.initialize();
+startBot(commandHandler);
