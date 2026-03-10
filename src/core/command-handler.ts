@@ -8,6 +8,10 @@ export class CommandHandler {
     this.commands.set(command.name, command);
   }
 
+  getCommands() {
+    return Array.from(this.commands.keys());
+  }
+
   async execute(commandName: string, ctx: CommandContext) {
     const command = this.commands.get(commandName);
 
